@@ -99,6 +99,7 @@ for filetype in [ 'c', 'cuda', 'objc', 'objcpp', 'javascript', 'typescript' ]:
 #       (The latter two come from \W which is the negation of \w)
 #   - Followed by any alphanumeric or _ characters
 DEFAULT_IDENTIFIER_REGEX = re.compile( r"[^\W\d]\w*", re.UNICODE )
+HYPHEN_IDENTIFIER_REGEX = re.compile( r"[^\W\d][-\w]*", re.UNICODE )
 
 FILETYPE_TO_IDENTIFIER_REGEX = {
     # Spec:
@@ -129,6 +130,9 @@ FILETYPE_TO_IDENTIFIER_REGEX = {
          r"[-\*\+!_\?:\.a-zA-Z][-\*\+!_\?:\.\w]*/?[-\*\+!_\?:\.\w]*",
          re.UNICODE ),
 
+    # Spec: http://www.lispworks.com/documentation/HyperSpec/Body/02_ad.htm
+    'lisp': re.compile( r"[-!$%&*+./:<=>?@[\]^{}~\w]+", re.UNICODE),
+
     # Spec: http://www.haskell.org/onlinereport/lexemes.html
     # Section 2.4
     'haskell': re.compile( r"[_a-zA-Z][\w']+", re.UNICODE ),
@@ -147,6 +151,8 @@ FILETYPE_TO_IDENTIFIER_REGEX = {
                           r"(?:->|(:?\\x[0-9A-Fa-f]+;|[!$%&*/:<=>?~^]|[^\W\d]))"
                           r"(?:\\x[0-9A-Fa-f]+;|[-+.@!$%&*/:<=>?~^\w])*",
                           re.UNICODE ),
+
+    'readline': HYPHEN_IDENTIFIER_REGEX,
 }
 
 FILETYPE_TO_IDENTIFIER_REGEX[ 'typescript' ] = (
